@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url:  jdbc:mysql://192.168.56.102:3306/durain?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: root
+  session:
+    store-type: none
+  redis:
+    host: 192.168.56.102
+    port: 6379
+  application:
+    name: bootu-security-demo
+#security:
+#  basic:
+#    enabled: true
+server:
+  port: 8901
+
+bootu:
+  security:
+    web:
+#      loginPage:  /demo-login.html # if not config will use security web default bootu-signIn.html
+      loginType:  REDIRECT #JSON OR REDIRECT
