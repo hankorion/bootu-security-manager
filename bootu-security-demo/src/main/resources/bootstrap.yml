@@ -20,5 +20,13 @@ server:
 bootu:
   security:
     web:
-#      loginPage:  /demo-login.html # if not config will use security web default bootu-signIn.html
-      loginType:  REDIRECT #JSON OR REDIRECT
+      #      loginPage:  /demo-login.html # if not config will use security web default bootu-signIn.html
+      loginType:  JSON #JSON OR REDIRECT
+    code:
+      image:
+        codeCount:  4
+        width:  160
+        height: 40
+        lineCount:  30
+        expireAfter:  60
+        url:  /user2,/user2/* #URLs to validate code
