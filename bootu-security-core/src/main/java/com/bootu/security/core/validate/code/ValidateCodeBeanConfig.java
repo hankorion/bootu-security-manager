@@ -1,6 +1,9 @@
 package com.bootu.security.core.validate.code;
 
 import com.bootu.security.core.properties.SecurityProperties;
+import com.bootu.security.core.validate.code.image.ImageValidateCodeGenerator;
+import com.bootu.security.core.validate.code.sms.DefaultSmsCodeSender;
+import com.bootu.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -18,5 +21,11 @@ public class ValidateCodeBeanConfig {
         ImageValidateCodeGenerator codeGenerator = new ImageValidateCodeGenerator();
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(SmsCodeSender.class)
+    public SmsCodeSender smsCodeSender() {
+        return new DefaultSmsCodeSender();
     }
 }

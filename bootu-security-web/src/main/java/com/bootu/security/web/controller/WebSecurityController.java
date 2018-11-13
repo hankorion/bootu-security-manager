@@ -1,5 +1,6 @@
 package com.bootu.security.web.controller;
 
+import com.bootu.security.core.properties.SecurityConstants;
 import com.bootu.security.core.properties.SecurityProperties;
 import com.bootu.security.web.dto.BasicResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class WebSecurityController {
     @Autowired
     private SecurityProperties securityProperties;
 
-    @RequestMapping("/authentication/required")
+    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public BasicResponse requiredAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

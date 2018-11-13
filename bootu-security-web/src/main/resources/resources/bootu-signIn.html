@@ -97,12 +97,28 @@
                     <button class="btn btn-lg btn-primary btn-block" type="submit">
                         Sign in</button>
                     <label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">
+                        <input type="checkbox" value="true" name="remember-me">
                         Remember me
                     </label>
                     <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
                 </form>
             </div>
+            <div class="account-wall">
+                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                     alt="">
+                <form class="form-signin" action="/authentication/sms" method="post"   >
+                    <input type="text" name="mobileNo" class="form-control" placeholder="Mobile Number" required autofocus>
+                    <input type="text" name="smsCode" class="form-control" placeholder="SMS Code">
+                    <a href="/code/sms?mobileNo=99998888">Send Verify Code</a>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">
+                        Sign in</button>
+                    <label class="checkbox pull-left">
+                        <input type="checkbox" value="true" name="remember-me">
+                        Remember me
+                    </label>
+                </form>
+            </div>
+
             <a href="#" class="text-center new-account">Create an account </a>
         </div>
     </div>

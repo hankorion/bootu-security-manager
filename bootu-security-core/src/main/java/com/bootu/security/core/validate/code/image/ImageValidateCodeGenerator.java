@@ -1,7 +1,8 @@
-package com.bootu.security.core.validate.code;
+package com.bootu.security.core.validate.code.image;
 
 import com.bootu.security.core.enums.ImagePropertiesEnum;
 import com.bootu.security.core.properties.SecurityProperties;
+import com.bootu.security.core.validate.code.ValidateCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;

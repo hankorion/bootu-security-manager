@@ -7,4 +7,5 @@ import lombok.Data;
 public class WebProperties {
     private String loginPage = "/bootu-signIn.html";
     private LoginTypeEnum loginType = LoginTypeEnum.JSON;
+    private int rememberMeSeconds = 3600;
 }

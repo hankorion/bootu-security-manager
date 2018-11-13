@@ -1,15 +1,14 @@
 package com.bootu.security.core.validate.code;
 
+import com.bootu.security.core.properties.SecurityConstants;
 import com.bootu.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.social.connect.web.HttpSessionSessionStrategy;
-import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,107 +17,80 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
+@Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
+    @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
-    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
-    private Set<String> urls = new HashSet<>();
+
+    @Autowired
     private SecurityProperties securityProperties;
+
+    @Autowired
+    private ValidateCodeProcessorHolder validateCodeProcessorHolder;
+
+    private Map<String, ValidateCodeType> urlMap = new HashMap<>();
+
+
+
     private AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
-        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(), ",");
-        for (String configUrl : configUrls) {
-            if (configUrl != null && !configUrl.trim().isEmpty()) {
-                urls.add(configUrl.trim());
+        urlMap.put(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
+        addUrlToMap(securityProperties.getCode().getImage().getUrl(), ValidateCodeType.IMAGE);
+
+        urlMap.put(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE, ValidateCodeType.SMS);
+        addUrlToMap(securityProperties.getCode().getSms().getUrl(), ValidateCodeType.SMS);
+    }
+
+    protected void addUrlToMap(String urlString, ValidateCodeType type) {
+        if (StringUtils.isNotBlank(urlString)) {
+            String[] urls = StringUtils.splitByWholeSeparatorPreserveAllTokens(urlString, ",");
+            for (String url : urls) {
+                urlMap.put(url, type);
             }
-            urls.add("/authentication/form");
         }
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        boolean procced = false;
-        for(String url : urls){
-            if(pathMatcher.match(url, httpServletRequest.getRequestURI())){
-                procced = true;
-                break;
-            }
-        }
+        ValidateCodeType type = getValidateCodeType(httpServletRequest);
 
-        if (procced) {
+        if (type != null) {
+            log.info("Validate request [{}], validate code type [{}]",httpServletRequest.getRequestURI(), type);
             try {
-                log.info("vailidate urls [{}]",urls);
-                validate(new ServletWebRequest(httpServletRequest));
-            } catch (ValidateCodeException e) {
-                authenticationFailureHandler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
+                validateCodeProcessorHolder.findValidateCodeProcessor(type)
+                        .validate(new ServletWebRequest(httpServletRequest, httpServletResponse));
+                log.info("Validate success");
+            } catch (ValidateCodeException exception) {
+                authenticationFailureHandler.onAuthenticationFailure(httpServletRequest, httpServletResponse, exception);
                 return;
             }
         }
 
+
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    private void validate(ServletWebRequest servletWebRequest) throws ServletRequestBindingException {
-        ImageCode codeFromSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
-        String codeFromRequest = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "imageCode");
-
-        if (StringUtils.isBlank(codeFromRequest)) {
-            throw new ValidateCodeException("Code cannot be empty");
+    private ValidateCodeType getValidateCodeType(HttpServletRequest request) {
+        ValidateCodeType result = null;
+        if (!StringUtils.equalsIgnoreCase(request.getMethod(), "get")) {
+            Set<String> urls = urlMap.keySet();
+            for (String url : urls) {
+                if (pathMatcher.match(url, request.getRequestURI())) {
+                    result = urlMap.get(url);
+                }
+            }
         }
-
-        if (codeFromSession == null) {
-            throw new ValidateCodeException("Code not found");
-        }
-
-        if (codeFromSession.isExpired()) {
-            sessionStrategy.removeAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
-            throw new ValidateCodeException("code expired");
-        }
-
-        if (!StringUtils.equals(codeFromSession.getCode(), codeFromRequest)) {
-            throw new ValidateCodeException("code not match");
-        }
-        log.info("codeFromSession = [{}] , codeFromRequest = [{}]", codeFromSession.getCode(), codeFromRequest);
-        sessionStrategy.removeAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
+        return result;
     }
 
-    public AuthenticationFailureHandler getAuthenticationFailureHandler() {
-        return authenticationFailureHandler;
-    }
-
-    public void setAuthenticationFailureHandler(AuthenticationFailureHandler authenticationFailureHandler) {
-        this.authenticationFailureHandler = authenticationFailureHandler;
-    }
-
-    public SessionStrategy getSessionStrategy() {
-        return sessionStrategy;
-    }
-
-    public void setSessionStrategy(SessionStrategy sessionStrategy) {
-        this.sessionStrategy = sessionStrategy;
-    }
-
-    public Set<String> getUrls() {
-        return urls;
-    }
-
-    public void setUrls(Set<String> urls) {
-        this.urls = urls;
-    }
-
-    public SecurityProperties getSecurityProperties() {
-        return securityProperties;
-    }
-
-    public void setSecurityProperties(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
-    }
 }

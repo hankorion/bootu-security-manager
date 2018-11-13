@@ -2,7 +2,7 @@ package com.bootu.security.demo.validate.code;
 
 import com.bootu.security.core.enums.ImagePropertiesEnum;
 import com.bootu.security.core.properties.SecurityProperties;
-import com.bootu.security.core.validate.code.ImageCode;
+import com.bootu.security.core.validate.code.image.ImageCode;
 import com.bootu.security.core.validate.code.ValidateCodeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
