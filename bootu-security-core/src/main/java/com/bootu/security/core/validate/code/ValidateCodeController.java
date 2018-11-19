@@ -22,40 +22,4 @@ public class ValidateCodeController {
             throws Exception {
         validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
     }
-
-
-//    public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
-//
-//    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
-//
-//    @Autowired
-//    private ValidateCodeGenerator imageValidateCodeGenerator;
-//
-//    @Autowired
-//    private ValidateCodeGenerator smsValidateCodeGenerator;
-//
-//    @Autowired
-//    private SmsCodeSender smsCodeSender;
-
-
-
-//
-//    @GetMapping("/code/image")
-//    public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//
-//        ImageCode imageCode = (ImageCode) imageValidateCodeGenerator.generateCode(new ServletWebRequest(request));
-//        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
-//
-//        ImageIO.write(imageCode.getImage(), "PNG", response.getOutputStream());
-//    }
-//
-//    @GetMapping("/code/sms")
-//    public void createSMSCode(HttpServletRequest request, HttpServletResponse response) throws ServletRequestBindingException {
-//
-//        ValidateCode smsCode = smsValidateCodeGenerator.generateCode(new ServletWebRequest(request));
-//        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, smsCode);
-//        String mobileNo = ServletRequestUtils.getRequiredStringParameter(request,"mobileNo");
-//        smsCodeSender.send(mobileNo,smsCode.getCode());
-//    }
-
 }

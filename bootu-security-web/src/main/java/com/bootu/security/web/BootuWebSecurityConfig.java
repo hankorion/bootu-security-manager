@@ -2,6 +2,7 @@ package com.bootu.security.web;
 
 import com.bootu.security.core.authentication.FormAuthenticationConfig;
 import com.bootu.security.core.authentication.sms.SmsCodeAuthenticationSecurityConfig;
+import com.bootu.security.core.properties.SecurityConstants;
 import com.bootu.security.core.properties.SecurityProperties;
 import com.bootu.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -22,13 +24,6 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SecurityProperties securityProperties;
-
-//    @Autowired
-//    private AuthenticationSuccessHandler bootuAuthenticationSuccessHandler;
-//
-//    @Autowired
-//    private AuthenticationFailureHandler bootuAuthenticationFailureHandler;
-
 
     @Autowired
     private DataSource dataSource;
@@ -43,26 +38,23 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
     private FormAuthenticationConfig formAuthenticationConfig;
 
     @Autowired
+    private SpringSocialConfigurer bootuSocialSecurityConfig;
+
+    @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-//        validateCodeFilter.setAuthenticationFailureHandler(bootuAuthenticationFailureHandler);
-//        validateCodeFilter.setSecurityProperties(securityProperties);
-//        validateCodeFilter.afterPropertiesSet();
-
         formAuthenticationConfig.configure(http);
 
         http
                 .apply(validateCodeSecurityConfig)
                     .and()
-//                .successHandler(bootuAuthenticationSuccessHandler)
-//                .failureHandler(bootuAuthenticationFailureHandler)
-//                .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
+                    .and()
+                .apply(bootuSocialSecurityConfig)
                     .and()
                 .rememberMe()
                     .tokenRepository(persistentTokenRepository())
@@ -70,9 +62,12 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userDetailsService(userDetailsService)
                     .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require"
+                .antMatchers(
+                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL
+                        , SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM
+                        , SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE
                         , securityProperties.getWeb().getLoginPage()
-                        , "/code/*").permitAll()
+                        , SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*").permitAll()
                 .anyRequest()
                 .authenticated()
                     .and()

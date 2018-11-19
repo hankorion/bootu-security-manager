@@ -6,6 +6,9 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 
 import java.util.Collection;
 
+/**
+ * refer from UsernamePasswordAuthenticationToken
+ */
 public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;

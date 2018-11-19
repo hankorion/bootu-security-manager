@@ -19,14 +19,20 @@ server:
 
 bootu:
   security:
-    web:
-      #      loginPage:  /demo-login.html # if not config will use security web default bootu-signIn.html
-      loginType:  JSON #JSON OR REDIRECT
-    code:
-      image:
-        codeCount:  1 # count of charts for image code
-        width:  160 # image code image width
-        height: 40 # image code image height
-        lineCount:  30 # image code mesh line count
-        expireAfter:  60 # image code expire after x seconds
-        url:  /user2,/user2/* # URLs will be validate by image code
+#    web:
+#      #      loginPage:  /demo-login.html # if not config will use security web default bootu-signIn.html
+#      loginType:  JSON #JSON OR REDIRECT
+#    code:
+#      image:
+#        codeCount:  1 # count of charts for image code
+#        width:  160 # image code image width
+#        height: 40 # image code image height
+#        lineCount:  30 # image code mesh line count
+#        expireAfter:  60 # image code expire after x seconds
+#        url:  /user2,/user2/* # URLs will be validate by image code
+    social:
+      filterProcessesUrl: /qqLogin
+      qq:
+        app-id: # QQ login app id
+        app-secret: # QQ login app token
+        providerId: callback.do

@@ -29,15 +29,15 @@ public interface SecurityConstants {
 
     String DEFAULT_UNAUTHENTICATION_URL = "/authentication/require";
     /**
-     * 默认的用户名密码登录请求处理url
+     * default user name and password validation url
      */
     String DEFAULT_SIGN_IN_PROCESSING_URL_FORM = "/authentication/form";
     /**
-     * 默认的手机验证码登录请求处理url
+     * default sms validation url
      */
-    String DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE = "/authentication/mobile";
+    String DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE = "/authentication/sms";
     /**
-     * 默认的OPENID登录请求处理url
+     * default openid validation url
      */
     String DEFAULT_SIGN_IN_PROCESSING_URL_OPENID = "/authentication/openid";
 

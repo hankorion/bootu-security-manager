@@ -11,6 +11,9 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * refer from UsernamePasswordAuthenticationFilter
+ */
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     // ~ Static fields/initializers
     // =====================================================================================
@@ -52,7 +55,7 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 
 
     /**
-     * 获取手机号
+     * get mobile number
      */
     protected String obtainMobile(HttpServletRequest request) {
         return request.getParameter(mobileParameter);

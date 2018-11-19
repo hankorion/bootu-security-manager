@@ -9,4 +9,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class SecurityProperties {
     private WebProperties web = new WebProperties();
     private ValidateCodeProperties code = new ValidateCodeProperties();
+    private SocialProperties social = new SocialProperties();
 }
