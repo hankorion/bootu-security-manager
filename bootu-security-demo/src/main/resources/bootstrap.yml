@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url:  jdbc:mysql://192.168.56.102:3306/durain?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    url:  jdbc:mysql://192.168.56.101:3306/durain?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     username: root
     password: root
   session:
     store-type: none
   redis:
-    host: 192.168.56.102
+    host: 192.168.56.101
     port: 6379
   application:
     name: bootu-security-demo
@@ -15,11 +15,12 @@ spring:
 #  basic:
 #    enabled: true
 server:
-  port: 8901
+  port: 9081
 
 bootu:
   security:
-#    web:
+    web:
+      signUpUrl:  /demo-signUp.html
 #      #      loginPage:  /demo-login.html # if not config will use security web default bootu-signIn.html
 #      loginType:  JSON #JSON OR REDIRECT
 #    code:
@@ -36,3 +37,6 @@ bootu:
         app-id: # QQ login app id
         app-secret: # QQ login app token
         providerId: callback.do
+      weixin:
+        app-id: wxd99431bbff8305a0 # weixin login app id
+        app-secret: 60f78681d063590a469f1b297feff3c4 # weixin login app token

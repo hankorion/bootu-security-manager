@@ -67,6 +67,9 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         , SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM
                         , SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE
                         , securityProperties.getWeb().getLoginPage()
+                        , securityProperties.getWeb().getSignUpUrl()
+                        , "/user/regist"
+                        //, "/qqLogin/*"
                         , SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*").permitAll()
                 .anyRequest()
                 .authenticated()
