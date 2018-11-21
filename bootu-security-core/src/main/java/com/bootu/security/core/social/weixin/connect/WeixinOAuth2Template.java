@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 @Slf4j
-public class WeixinOAuth2Template  extends OAuth2Template {
+public class WeixinOAuth2Template extends OAuth2Template {
 
     private String clientId;
 
@@ -38,11 +38,11 @@ public class WeixinOAuth2Template  extends OAuth2Template {
 
         StringBuilder accessTokenRequestUrl = new StringBuilder(accessTokenUrl);
 
-        accessTokenRequestUrl.append("?appid="+clientId);
-        accessTokenRequestUrl.append("&secret="+clientSecret);
-        accessTokenRequestUrl.append("&code="+authorizationCode);
+        accessTokenRequestUrl.append("?appid=" + clientId);
+        accessTokenRequestUrl.append("&secret=" + clientSecret);
+        accessTokenRequestUrl.append("&code=" + authorizationCode);
         accessTokenRequestUrl.append("&grant_type=authorization_code");
-        accessTokenRequestUrl.append("&redirect_uri="+redirectUri);
+        accessTokenRequestUrl.append("&redirect_uri=" + redirectUri);
 
         return getAccessToken(accessTokenRequestUrl);
     }
@@ -51,9 +51,9 @@ public class WeixinOAuth2Template  extends OAuth2Template {
 
         StringBuilder refreshTokenUrl = new StringBuilder(SecurityConstants.WEIXIN_REFRESH_TOKEN_URL);
 
-        refreshTokenUrl.append("?appid="+clientId);
+        refreshTokenUrl.append("?appid=" + clientId);
         refreshTokenUrl.append("&grant_type=refresh_token");
-        refreshTokenUrl.append("&refresh_token="+refreshToken);
+        refreshTokenUrl.append("&refresh_token=" + refreshToken);
 
         return getAccessToken(refreshTokenUrl);
     }
@@ -61,11 +61,11 @@ public class WeixinOAuth2Template  extends OAuth2Template {
     @SuppressWarnings("unchecked")
     private AccessGrant getAccessToken(StringBuilder accessTokenRequestUrl) {
 
-        log.info("获取access_token, 请求URL: [{}] ",accessTokenRequestUrl.toString());
+        log.info("获取access_token, 请求URL: [{}] ", accessTokenRequestUrl.toString());
 
         String response = getRestTemplate().getForObject(accessTokenRequestUrl.toString(), String.class);
 
-        log.info("获取access_token, 响应内容: [{}]  ",response);
+        log.info("获取access_token, 响应内容: [{}]  ", response);
 
         Map<String, Object> result = null;
         try {
@@ -75,10 +75,10 @@ public class WeixinOAuth2Template  extends OAuth2Template {
         }
 
         //返回错误码时直接返回空
-        if(StringUtils.isNotBlank(MapUtils.getString(result, "errcode"))){
+        if (StringUtils.isNotBlank(MapUtils.getString(result, "errcode"))) {
             String errcode = MapUtils.getString(result, "errcode");
             String errmsg = MapUtils.getString(result, "errmsg");
-            throw new RuntimeException("获取access token失败, errcode:"+errcode+", errmsg:"+errmsg);
+            throw new RuntimeException("获取access token失败, errcode:" + errcode + ", errmsg:" + errmsg);
         }
 
         WeixinAccessGrant accessToken = new WeixinAccessGrant(
@@ -97,7 +97,7 @@ public class WeixinOAuth2Template  extends OAuth2Template {
      */
     public String buildAuthenticateUrl(OAuth2Parameters parameters) {
         String url = super.buildAuthenticateUrl(parameters);
-        url = url + "&appid="+clientId+"&scope=snsapi_login";
+        url = url + "&appid=" + clientId + "&scope=snsapi_login";
         return url;
     }
 

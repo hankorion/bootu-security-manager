@@ -14,9 +14,9 @@ public class BootuConnectionView  extends AbstractView{
 
         response.setContentType("text/html;charset=UTF-8");
         if (model.get("connections") == null) {
-            response.getWriter().write("<h3>解绑成功</h3>");
+            response.getWriter().write("<h3>Remove Binding Success</h3>");
         } else {
-            response.getWriter().write("<h3>绑定成功</h3>");
+            response.getWriter().write("<h3>Binding Success</h3>");
         }
 
     }

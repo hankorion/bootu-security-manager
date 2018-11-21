@@ -2,6 +2,7 @@ package com.bootu.security.web.controller;
 
 import com.bootu.security.core.properties.SecurityConstants;
 import com.bootu.security.core.properties.SecurityProperties;
+import com.bootu.security.core.social.controller.SocialController;
 import com.bootu.security.core.social.support.SocialUserInfo;
 import com.bootu.security.web.dto.BasicResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ import java.io.IOException;
 
 @RestController
 @Slf4j
-public class WebSecurityController {
+public class WebSecurityController extends SocialController {
 
     private RequestCache reqCache = new HttpSessionRequestCache();
 
@@ -58,12 +59,7 @@ public class WebSecurityController {
 
     @GetMapping(SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL)
     public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
-        SocialUserInfo userInfo = new SocialUserInfo();
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
-        userInfo.setProviderId(connection.getKey().getProviderId());
-        userInfo.setProviderUserId(connection.getKey().getProviderUserId());
-        userInfo.setNickname(connection.getDisplayName());
-        userInfo.setHeadimg(connection.getImageUrl());
-        return userInfo;
+        return buildSocialUserInfo(connection);
     }
 }

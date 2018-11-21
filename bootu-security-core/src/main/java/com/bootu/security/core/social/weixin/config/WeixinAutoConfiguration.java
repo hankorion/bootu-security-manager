@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
-import org.springframework.web.servlet.View;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.web.servlet.View;
 
 @Configuration
 @ConditionalOnProperty(prefix = "bootu.security.social.weixin", name = "app-id")
-public class WeixinAutoConfiguration  extends SocialAutoConfigurerAdapter {
+public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
 
 
     @Autowired

@@ -2,6 +2,7 @@ package com.bootu.security.core.social;
 
 import com.bootu.security.core.properties.SecurityProperties;
 import com.bootu.security.core.social.support.BootuSpringSocialConfigurer;
+import com.bootu.security.core.social.support.SocialAuthenticationFilterPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired(required =  false)
     private ConnectionSignUp connectionSignUp;
 
+    @Autowired(required = false)
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
 
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
@@ -41,14 +45,25 @@ public class SocialConfig extends SocialConfigurerAdapter {
         return repository;
     }
 
+    /**
+     * 社交登录配置类，供浏览器或app模块引入设计登录配置用。
+     * @return
+     */
     @Bean
     public SpringSocialConfigurer bootuSocialSecurityConfig(){
         String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
         BootuSpringSocialConfigurer bootuSpringSocialConfigurer = new BootuSpringSocialConfigurer(filterProcessesUrl);
         bootuSpringSocialConfigurer.signupUrl(securityProperties.getWeb().getSignUpUrl());
+        bootuSpringSocialConfigurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
         return bootuSpringSocialConfigurer;
     }
 
+    /**
+     * 用来处理注册流程的工具类
+     *
+     * @param connectionFactoryLocator
+     * @return
+     */
     @Bean
     public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator){
         return new ProviderSignInUtils(connectionFactoryLocator, getUsersConnectionRepository(connectionFactoryLocator));
