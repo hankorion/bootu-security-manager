@@ -2,7 +2,7 @@ package com.bootu.security.web;
 
 import com.bootu.security.core.authentication.FormAuthenticationConfig;
 import com.bootu.security.core.authentication.sms.SmsCodeAuthenticationSecurityConfig;
-import com.bootu.security.core.properties.SecurityConstants;
+import com.bootu.security.core.authorize.AuthorizeConfigManager;
 import com.bootu.security.core.properties.SecurityProperties;
 import com.bootu.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -43,6 +45,14 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
+
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
+
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,24 +67,20 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(bootuSocialSecurityConfig)
                     .and()
                 .rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    .tokenValiditySeconds(securityProperties.getWeb().getRememberMeSeconds())
-                    .userDetailsService(userDetailsService)
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(securityProperties.getWeb().getRememberMeSeconds())
+                .userDetailsService(userDetailsService)
                     .and()
-                .authorizeRequests()
-                .antMatchers(
-                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL
-                        , SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM
-                        , SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE
-                        , securityProperties.getWeb().getLoginPage()
-                        , securityProperties.getWeb().getSignUpUrl()
-                        , "/user/regist"
-                        //, "/qqLogin/*"
-                        , SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*").permitAll()
-                .anyRequest()
-                .authenticated()
+                .sessionManagement()
+                    .invalidSessionStrategy(invalidSessionStrategy)
+                    .maximumSessions(securityProperties.getWeb().getSession().getMaximumSessions())
+                    .maxSessionsPreventsLogin(securityProperties.getWeb().getSession().isMaxSessionsPreventsLogin())
+                    .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                    .and()
                     .and()
                 .csrf().disable();
+
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 
 

@@ -54,7 +54,7 @@ public class WebSecurityController extends SocialController {
             }
         }
 
-        return new BasicResponse("Requied Sign In, please redirect to login page");
+        return new BasicResponse("Required Sign In, please redirect to login page");
     }
 
     @GetMapping(SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL)
@@ -62,4 +62,5 @@ public class WebSecurityController extends SocialController {
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
         return buildSocialUserInfo(connection);
     }
+
 }

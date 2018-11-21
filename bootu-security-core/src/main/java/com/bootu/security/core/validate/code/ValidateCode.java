@@ -2,13 +2,16 @@ package com.bootu.security.core.validate.code;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
 @Data
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
 
+    private static final long serialVersionUID = -4626331315517324696L;
+    
     private String code;
 
     private LocalDateTime expireTime;

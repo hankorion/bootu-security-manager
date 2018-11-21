@@ -67,4 +67,15 @@ public interface SecurityConstants {
      * 获取第三方用户信息的url
      */
     String DEFAULT_SOCIAL_USER_INFO_URL = "/social/user";
+
+    /**
+     * Session timeout/invalid url
+     */
+    String DEFAULT_SESSION_INVALID_URL = "/bootu-session-invalid.html";
+
+    /**
+     * Session timeout/invalid url
+     */
+    String DEFAULT_USER_REGISTER_URL = "/user/register";
+
 }
