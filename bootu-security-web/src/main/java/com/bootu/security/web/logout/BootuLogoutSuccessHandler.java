@@ -1,6 +1,6 @@
 package com.bootu.security.web.logout;
 
-import com.bootu.security.web.dto.BasicResponse;
+import com.bootu.security.core.dto.BasicResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;

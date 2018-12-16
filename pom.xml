@@ -18,7 +18,7 @@
         <module>bootu-security-demo</module>
         <module>bootu-security-web</module>
         <module>bootu-security-core</module>
-        <module>bootu-security-app</module>
+        <module>bootu-security-service</module>
     </modules>
 
 

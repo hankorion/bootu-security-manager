@@ -12,9 +12,14 @@
     <artifactId>bootu-security-demo</artifactId>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>com.bootu.security</groupId>-->
+            <!--<artifactId>bootu-security-web</artifactId>-->
+            <!--<version>${bootu.security.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.bootu.security</groupId>
-            <artifactId>bootu-security-web</artifactId>
+            <artifactId>bootu-security-service</artifactId>
             <version>${bootu.security.version}</version>
         </dependency>
         <dependency>
@@ -24,6 +29,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

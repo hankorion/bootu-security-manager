@@ -78,4 +78,9 @@ public interface SecurityConstants {
      */
     String DEFAULT_USER_REGISTER_URL = "/user/register";
 
+    /**
+     * Signout/Logout URL
+     */
+    String DEFAULT_SIGN_OUT_REQUEST_URL = "signOut";
+
 }

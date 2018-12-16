@@ -4,7 +4,7 @@ import com.bootu.security.core.properties.SecurityConstants;
 import com.bootu.security.core.properties.SecurityProperties;
 import com.bootu.security.core.social.controller.SocialController;
 import com.bootu.security.core.social.support.SocialUserInfo;
-import com.bootu.security.web.dto.BasicResponse;
+import com.bootu.security.core.dto.BasicResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

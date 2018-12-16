@@ -38,5 +38,4 @@ public class BootuAuthorizeConfigProvider implements AuthorizeConfigProvider {
         }
         return false;
     }
-
 }

@@ -16,7 +16,7 @@ public class BootuAuthorizeConfigManager implements AuthorizeConfigManager {
     private List<AuthorizeConfigProvider> authorizeConfigProviders;
 
     /* (non-Javadoc)
-     * @see com.imooc.security.core.authorize.AuthorizeConfigManager#config(org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry)
+     * @see com.bootu.security.core.authorize.AuthorizeConfigManager#config(org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry)
      */
     @Override
     public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {

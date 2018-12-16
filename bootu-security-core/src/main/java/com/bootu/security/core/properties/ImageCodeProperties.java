@@ -1,8 +1,10 @@
 package com.bootu.security.core.properties;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
+@ConfigurationProperties(prefix = "bootu.security.code.image")
 public class ImageCodeProperties extends BasicCodeProperties {
 
     // Image width

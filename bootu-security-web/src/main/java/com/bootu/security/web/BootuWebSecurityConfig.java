@@ -3,6 +3,7 @@ package com.bootu.security.web;
 import com.bootu.security.core.authentication.FormAuthenticationConfig;
 import com.bootu.security.core.authentication.sms.SmsCodeAuthenticationSecurityConfig;
 import com.bootu.security.core.authorize.AuthorizeConfigManager;
+import com.bootu.security.core.properties.SecurityConstants;
 import com.bootu.security.core.properties.SecurityProperties;
 import com.bootu.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
@@ -54,6 +54,12 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
+
+    @Autowired
+    private PersistentTokenRepository persistentTokenRepository;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -61,39 +67,32 @@ public class BootuWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .apply(validateCodeSecurityConfig)
-                    .and()
+                .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
-                    .and()
+                .and()
                 .apply(bootuSocialSecurityConfig)
-                    .and()
+                .and()
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository())
+                .tokenRepository(persistentTokenRepository)
                 .tokenValiditySeconds(securityProperties.getWeb().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
-                    .and()
+                .and()
                 .sessionManagement()
-                    .invalidSessionStrategy(invalidSessionStrategy)
-                    .maximumSessions(securityProperties.getWeb().getSession().getMaximumSessions())
-                    .maxSessionsPreventsLogin(securityProperties.getWeb().getSession().isMaxSessionsPreventsLogin())
-                    .expiredSessionStrategy(sessionInformationExpiredStrategy)
-                    .and()
-                    .and()
+                .invalidSessionStrategy(invalidSessionStrategy)
+                .maximumSessions(securityProperties.getWeb().getSession().getMaximumSessions())
+                .maxSessionsPreventsLogin(securityProperties.getWeb().getSession().isMaxSessionsPreventsLogin())
+                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                .and()
+                .and()
+                .logout()
+                .logoutUrl(SecurityConstants.DEFAULT_SIGN_OUT_REQUEST_URL)
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
+                .and()
                 .csrf().disable();
 
         authorizeConfigManager.config(http.authorizeRequests());
     }
 
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-        tokenRepository.setDataSource(dataSource);
-//        tokenRepository.setCreateTableOnStartup(true);
-        return tokenRepository;
-    }
 }

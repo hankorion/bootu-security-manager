@@ -1,7 +1,7 @@
 package com.bootu.security.web.session;
 
 import com.bootu.security.core.properties.SecurityProperties;
-import com.bootu.security.web.dto.BasicResponse;
+import com.bootu.security.core.dto.BasicResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;

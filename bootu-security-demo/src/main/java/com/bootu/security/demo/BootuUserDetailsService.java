@@ -1,4 +1,4 @@
-package com.bootu.security.web;
+package com.bootu.security.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class BootuUserDetailsService implements UserDetailsService, SocialUserDe
 
         return new SocialUser(userId, password,
                 true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("xxx"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin, ROLE_USER"));
     }
 
 }

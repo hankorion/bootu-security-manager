@@ -1,4 +1,4 @@
-package com.bootu.security.web.dto;
+package com.bootu.security.core.dto;
 
 import lombok.Data;
 

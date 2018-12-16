@@ -1,12 +1,14 @@
 package com.bootu.security.core.properties;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
+@ConfigurationProperties(prefix = "bootu.security.web.session")
 public class SessionProperties {
 
     /**
-     * 同一个用户在系统中的最大session数，默认1
+     * Max concurrent session for same user login to the system, default vaule is 1
      */
     private int maximumSessions = 1;
     /**

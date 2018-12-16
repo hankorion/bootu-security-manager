@@ -21,10 +21,12 @@ server:
   session:
     timeout: 600 # system will terminate session if there's no action on it after x seconds, default should more then 60 seconds
 
+
 bootu:
-  security:
-    web:
-      signUpUrl:  /demo-signUp.html
+#  security:
+#    web:
+#      signUpUrl:  /demo-signUp.html
+#      signOutUrl: /bootu-logout.html # Define sign success redirect url
     #      session:
     #        sessionInvalidUrl:  /bootu-session-invalid.html
     #        maximumSessions:  1
@@ -39,12 +41,17 @@ bootu:
     #        lineCount:  30 # image code mesh line count
     #        expireAfter:  60 # image code expire after x seconds
     #        url:  /user2,/user2/* # URLs will be validate by image code
-    social:
-      filterProcessesUrl: /qqLogin
-      qq:
-        app-id: # QQ login app id
-        app-secret: # QQ login app token
-        providerId: callback.do
-      weixin:
-        app-id: wxd99431bbff8305a0 # weixin login app id
-        app-secret: 60f78681d063590a469f1b297feff3c4 # weixin login app token
+#    social:
+#      filterProcessesUrl: /qqLogin
+#      qq:
+#        app-id: # QQ login app id
+#        app-secret: # QQ login app token
+#        providerId: callback.do
+#      weixin:
+#        app-id: wxd99431bbff8305a0 # weixin login app id
+#        app-secret: 60f78681d063590a469f1b297feff3c4 # weixin login app token
+security:
+  oauth2:
+    client:
+      client-id: bootu
+      client-secret: bootusecret
